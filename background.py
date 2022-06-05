@@ -43,6 +43,15 @@ def chop_background_video(video_length):
     background = VideoFileClip("assets/mp4/background.mp4")
 
     start_time, end_time = get_start_and_end_times(video_length, background.duration)
+    
+    #ffmpeg_extract_subclip fonksiyonun definitionuna git ve
+    """ cmd = [get_setting("FFMPEG_BINARY"),"-y",
+           "-ss", "%0.2f"%t1,
+           "-i", filename,
+           "-t", "%0.2f"%(t2-t1),
+           "-map", "0", "-vcodec", "copy", targetname] """
+    # cmd değişkenini bunla değiştir
+    
     ffmpeg_extract_subclip(
         "assets/mp4/background.mp4",
         start_time,

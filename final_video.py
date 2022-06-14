@@ -12,7 +12,7 @@ from moviepy.editor import (
 W, H = 1080, 1920
 
 def make_final_video(number_of_clips):
-    print("Creating the final video...")
+    print("Son video oluşturuluyor...")
     VideoFileClip.reW = lambda clip: clip.resize(width=W)
     VideoFileClip.reH = lambda clip: clip.resize(width=H)
 

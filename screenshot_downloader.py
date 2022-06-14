@@ -7,7 +7,7 @@ from selenium.webdriver.chrome.options import Options
 import json
 
 #chromedriver.exe pathını ekleyin
-sys.path.append("C:/Users/BEN/Desktop/bot_proje/RedditVideoBotPlus/chromedriver.exe")
+sys.path.append("C:/Users/bişeyler/bişeyler/chromedriver.exe")
 
 
 def download_screenshots_of_reddit_posts(reddit_object, screenshot_num, theme):
@@ -18,7 +18,7 @@ def download_screenshots_of_reddit_posts(reddit_object, screenshot_num, theme):
     print("Görünmez Tarayıcı Başlatıldı...")
 
     # bu kısma cookie.json dosyasının pathını koyun
-    cookie_file = open('C:/Users/BEN\Desktop/bot_proje/RedditVideoBotPlus/cookies.json')
+    cookie_file = open('C:/Users/bişeyler/bişeyler/cookies.json')
     cookies = json.load(cookie_file)
 
     options = Options()

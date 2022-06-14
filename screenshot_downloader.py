@@ -6,24 +6,27 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import json
 
-sys.path.append("C:/Users/bişeyler/bişeyler/chromedriver.exe") #chromedriver indirmen lazım 5mb falan hardpathla işte .exeye
+#chromedriver.exe pathını ekleyin
+sys.path.append("C:/Users/BEN/Desktop/bot_proje/RedditVideoBotPlus/chromedriver.exe")
 
 
 def download_screenshots_of_reddit_posts(reddit_object, screenshot_num, theme):
-    print("Downloading Screenshots of Reddit Posts 📷")
+    print("Reddit yorumlarının ekran görüntüleri alınıyor...")
 
     Path("assets/png").mkdir(parents=True, exist_ok=True)
 
-    print("Launching Headless Browser...")
+    print("Görünmez Tarayıcı Başlatıldı...")
 
     # bu kısma cookie.json dosyasının pathını koyun
-    cookie_file = open('C:/Users/bişeyler/bişeyler/cookies.json') # orjinal bottaki cookies.json hardpatla
+    cookie_file = open('C:/Users/BEN\Desktop/bot_proje/RedditVideoBotPlus/cookies.json')
     cookies = json.load(cookie_file)
 
     options = Options()
     options.add_argument('--headless')
-    options.add_argument('--disable-gpu')  # Last I checked this was necessary
+    options.add_argument('--disable-gpu') 
     options.add_argument("--log-level=3")
+    options.add_argument('--ignore-certificate-errors')
+    options.add_argument('--ignore-ssl-errors')
 
     browser = webdriver.Chrome(chrome_options=options)
 
@@ -31,11 +34,10 @@ def download_screenshots_of_reddit_posts(reddit_object, screenshot_num, theme):
     browser.set_window_size(1920, 1080)
     browser.add_cookie(cookie_dict=cookies)
 
-    """if browser.find_element_by_id('[data-testid="content-gate"]').is_displayed:
-            # This means the post is NSFW and requires to click the proceed button.
-
-            print("Post is NSFW. You are spicy...")
-            browser.find_element_by_id('[data-testid="content-gate"] button').click()"""
+    # buralarda biyerde hata alıyosan post nsfw dir onu çözdüm ama belki yinede hata verir falan bil yani
+    if browser.find_element_by_xpath('//div[@data-testid="content-gate"]').is_displayed:
+            print("Bu post NSFW. seni kirli adam")
+            browser.find_element_by_xpath('//button[@class="i2sTp1duDdXdwoKi1l8ED _2iuoyPiKHN3kfOoeIQalDT _2tU8R9NTqhvBrhoNAXWWcP HNozj_dKjQZ59ZsfEegz8 _2nelDm85zKKmuD94NequP0"]').click()
 
     browser.find_element_by_xpath('//div[@data-test-id="post-content"]').screenshot(filename="assets/png/title.png")
 
@@ -47,10 +49,15 @@ def download_screenshots_of_reddit_posts(reddit_object, screenshot_num, theme):
             if idx >= screenshot_num:
                 break
             
-            #if browser.find_element_by_xpath('//div[@data-testid="content-gate"]').is_displayed:
-            #    browser.find_element_by_xpath('//button[@data-testid="content-gate"] button').click()
+            """try:
+                if browser.find_element_by_xpath('//div[@data-testid="content-gate"]').is_displayed:
+                    browser.find_element_by_xpath('//button[@data-testid="content-gate"]').click()
+            except:
+                print("hata")"""
+
             browser.get(f'https://reddit.com{comment["comment_url"]}')
             browser.find_element_by_css_selector(f"#t1_{comment['comment_id']}").screenshot(filename=f"assets/png/comment_{idx}.png")
-    print("Screenshots downloaded Successfully.")
+    print("Ekran görüntüleri başarıyla kaydedildi.")
 
-    return 1
+    browser.close()
+    return 

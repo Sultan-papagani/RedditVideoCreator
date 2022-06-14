@@ -2,14 +2,14 @@ import praw
 import random
 import os, re
 
-CHAR_LIMIT = 219 # burası yorum en fazla kaç char olabilir
+#from main import SUB_NUMBER
 
 def remove_url(string):
     text = re.sub("(https?:\/\/)(\s)*(www\.)?(\s)*((\w|\s)+\.)*([\w\-\s]+\/)*([\w\-]+)((\?)?[\w\s]*=\s*[\w\%&]*)*", "", string)
     return text
 
-def get_subreddit_threads(id, secret, username, password, subreddit_limit, sub_number, sub_name):
-    print("Getting AskReddit threads...")
+def get_subreddit_threads(id, secret, username, password, subreddit_limit, sub_number, sub_name, CHAR_LIMIT):
+    print("Postlar getiriliyor...")
     reddit = praw.Reddit(
         client_id= id,
         client_secret=secret,
@@ -20,9 +20,10 @@ def get_subreddit_threads(id, secret, username, password, subreddit_limit, sub_n
     subreddit = reddit.subreddit(sub_name)
     
     threads = subreddit.hot(limit=subreddit_limit)
-    submission = list(threads)[sub_number] 
 
-    print(f"Videoyu şundan yapıyom ona göre: {submission.title}")
+    submission = list(threads)[sub_number] #[sub_number] 
+
+    print(f"Video konusu bu posttan seçildi: {submission.title}")
 
     content = {}
 
@@ -48,6 +49,6 @@ def get_subreddit_threads(id, secret, username, password, subreddit_limit, sub_n
     except AttributeError as e:
         pass
 
-    print("başarıyla AskReddit yorumlarını çaldık..")
+    print("Yorumlar Alındı...")
 
     return content

@@ -23,6 +23,9 @@ def get_threads_names(id, secret, username, password, subreddit_limit, sub_name)
                 i += 1
             if i >= 10: break
         ortalama_char /= 10
-        print(f"{index} | {th.title} | OK:{ortalama_char}")
+        nsfw = ""
+        if th.over_18:
+            nsfw = "NSFW"
+        print(f"{index} | {th.title} | OK:{ortalama_char} | {nsfw}")
 
     del(reddit)

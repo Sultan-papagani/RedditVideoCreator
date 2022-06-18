@@ -5,6 +5,7 @@ import sys
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import json
+from time import sleep
 
 #chromedriver.exe pathını ekleyin
 sys.path.append("C:/Users/bişeyler/bişeyler/chromedriver.exe")
@@ -22,7 +23,7 @@ def download_screenshots_of_reddit_posts(reddit_object, screenshot_num, theme):
     cookies = json.load(cookie_file)
 
     options = Options()
-    options.add_argument('--headless')
+    options.add_argument('--headless')  
     options.add_argument('--disable-gpu') 
     options.add_argument("--log-level=3")
     options.add_argument('--ignore-certificate-errors')
@@ -34,10 +35,10 @@ def download_screenshots_of_reddit_posts(reddit_object, screenshot_num, theme):
     browser.set_window_size(1920, 1080)
     browser.add_cookie(cookie_dict=cookies)
 
-    # buralarda biyerde hata alıyosan post nsfw dir onu çözdüm ama belki yinede hata verir falan bil yani
+
     if browser.find_element_by_xpath('//div[@data-testid="content-gate"]').is_displayed:
             print("Bu post NSFW. seni kirli adam")
-            browser.find_element_by_xpath('//button[@class="i2sTp1duDdXdwoKi1l8ED _2iuoyPiKHN3kfOoeIQalDT _2tU8R9NTqhvBrhoNAXWWcP HNozj_dKjQZ59ZsfEegz8 _2nelDm85zKKmuD94NequP0"]').click()
+            browser.find_element_by_xpath("//button[text()='Yes']").click()
 
     browser.find_element_by_xpath('//div[@data-test-id="post-content"]').screenshot(filename="assets/png/title.png")
 
@@ -48,15 +49,10 @@ def download_screenshots_of_reddit_posts(reddit_object, screenshot_num, theme):
             # Stop if we have reached the screenshot_num
             if idx >= screenshot_num:
                 break
-            
-            """try:
-                if browser.find_element_by_xpath('//div[@data-testid="content-gate"]').is_displayed:
-                    browser.find_element_by_xpath('//button[@data-testid="content-gate"]').click()
-            except:
-                print("hata")"""
 
             browser.get(f'https://reddit.com{comment["comment_url"]}')
             browser.find_element_by_css_selector(f"#t1_{comment['comment_id']}").screenshot(filename=f"assets/png/comment_{idx}.png")
+    
     print("Ekran görüntüleri başarıyla kaydedildi.")
 
     browser.close()

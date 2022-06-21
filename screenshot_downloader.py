@@ -39,6 +39,9 @@ def download_screenshots_of_reddit_posts(reddit_object, screenshot_num, theme):
     if browser.find_element_by_xpath('//div[@data-testid="content-gate"]').is_displayed:
             print("Bu post NSFW. seni kirli adam")
             browser.find_element_by_xpath("//button[text()='Yes']").click()
+            
+    nsfw_spoiler = browser.find_element_by_xpath("//button[text()='Click to see nsfw']")
+    if nsfw_spoiler.is_displayed: nsfw_spoiler.click()
 
     browser.find_element_by_xpath('//div[@data-test-id="post-content"]').screenshot(filename="assets/png/title.png")
 
